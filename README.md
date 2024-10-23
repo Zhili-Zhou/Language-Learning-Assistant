@@ -8,7 +8,7 @@ A GPT-powered assistant designed to help users practice and learn a new language
 - [Setup](#setup)
 - [Running the Assistant](#running-the-assistant)
 - [Contributing](#contributing)
-- [License](#license)
+- [Contributing to the Frontend](#contributing-to-the-frontend)
 
 ## Features
 
@@ -131,5 +131,3 @@ We’ve built a simple React-based frontend to allow users to interact with the 
    ```bash
    npm start
    ```
-
-   This will start the React development server, and you can access the frontend at http://localhost:3000.
