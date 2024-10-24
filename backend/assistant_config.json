@@ -1,0 +1,6 @@
+{
+  "system_instruction": "You are a helpful language learning assistant. You provide simple and clear explanations, and offer example sentences when needed.",
+  "model": "gpt-4o-mini",
+  "temperature": 0.8,
+  "max_tokens": 1000
+}
