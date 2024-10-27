@@ -45,7 +45,7 @@ with gr.Blocks() as demo:
             user_input = gr.Textbox(placeholder="Ask me something", container=False, scale=10)
         with gr.Column(scale=1):
             send_button = gr.Button("💬 send")
-        reset_button = gr.Button("🔄 Reset Conversation")
+    reset_button = gr.Button("🔄 Reset Conversation")
     
     # Link the buttons to functions
     send_button.click(chat_with_memory, [chatbot, user_input], [chatbot, user_input], queue=False)
