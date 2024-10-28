@@ -15,7 +15,7 @@ A GPT-powered assistant designed to help users practice and learn a new language
 - **Translation Assistance**: Get unfamiliar words translated.
 - **Vocabulary Practice**: Get definitions and example sentences for words in different languages.
 - **Grammar Assistance**: Ask the assistant to explain complex grammar rules.
-- **Conversation Practice**: Engage in basic conversations in the language you’re learning.
+- **Pronunciation Assistance**: Get the pronunciation of the words/sentences.
 - **Daily Vocabulary Word**: Get a new word to learn every day.
 
 ## Project Structure
