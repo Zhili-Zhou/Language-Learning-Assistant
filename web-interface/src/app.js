@@ -23,6 +23,7 @@ function App() {
     <div className="App">
       <h1>Language Learning Assistant</h1>
       <AssistantWithMemory />
+      <VocabularyPractice />
     </div>
   );
 }
