@@ -14,7 +14,7 @@ from PIL import Image
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
-# read assistant_config.json 
+# read assistant_config.json
 with open('assistant_config.json', 'r') as config_file:
     config = json.load(config_file)
 
@@ -46,13 +46,13 @@ def ask():
 
     if not user_input:
         return jsonify({"error": "No input provided"}), 400
-    
+
     # add userinput into history
     conversation_history.append({"role": "user", "content": user_input})
 
     # Send the conversation history to OpenAI's API to maintain context
     response = openai.ChatCompletion.create(
-        model=config["model"],  
+        model=config["model"],
         messages=[
             {"role": "system", "content": config["system_instruction"]},
             {"role": "user", "content": user_input}
@@ -60,7 +60,7 @@ def ask():
         max_tokens=config["max_tokens"],
         temperature=config["temperature"]
     )
-    
+
     answer = response.choices[0].message["content"].strip()
 
     # add answer from assistant into history
@@ -94,6 +94,7 @@ def pronounce():
 '''----------------------------roleplay assistant------------------------------------'''
 
 
+<<<<<<< HEAD
 
 def is_image_request(message):
     # Check if the message is likely to be an image request

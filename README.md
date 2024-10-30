@@ -15,7 +15,7 @@ A GPT-powered assistant designed to help users practice and learn a new language
 - **Translation Assistance**: Get unfamiliar words translated.
 - **Vocabulary Practice**: Get definitions and example sentences for words in different languages.
 - **Grammar Assistance**: Ask the assistant to explain complex grammar rules.
-- **Conversation Practice**: Engage in basic conversations in the language you’re learning.
+- **Pronunciation Assistance**: Get the pronunciation of the words/sentences.
 - **Daily Vocabulary Word**: Get a new word to learn every day.
 
 ## Project Structure
@@ -31,16 +31,7 @@ A GPT-powered assistant designed to help users practice and learn a new language
 ├── /venv                        # Virtual environment folder (not committed to GitHub)
 │
 ├── /web-interface               # Frontend folder
-│   ├── /node_modules            # Node.js dependencies (not committed to GitHub)
-│   ├── package-lock.json        # Locks the versions of frontend dependencies
-│   ├── package.json             # Lists the required frontend dependencies
-│   ├── /public
-│   │   └── index.html           # Main HTML file for the frontend
-│   ├── /src
-│   │   ├── app.js               # Main React component
-│   │   ├── /components          # Reusable React components
-│   │   ├── index.css            # Main CSS file for styling
-│   │   └── index.js             # Entry JavaScript file that renders the React app
+│   └──  gradio_frontend.py       
 │
 ├── README.md                    # Project documentation
 └── .gitignore                   # Git ignore file (to ignore sensitive files like .env and node_modules)
