@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 import json
 from gtts import gTTS
 from io import BytesIO
+import random
 
 
 app = Flask(__name__)
@@ -106,6 +107,33 @@ def get_vocabulary():
     }
 
     return jsonify(mock_response)
+
+# Daily word route to provide a word, definition, and examples
+@app.route("/daily_word", methods=["GET"])
+def daily_word():
+    # Mock vocabulary words for demonstration purposes
+    words = [
+        {
+            "word": "elucidate",
+            "meaning": "To make something clear or to explain.",
+            "examples": ["Please elucidate your point.", "The teacher elucidated the topic with ease."]
+        },
+        {
+            "word": "gregarious",
+            "meaning": "Fond of company; sociable.",
+            "examples": ["Sheep are very gregarious animals.", "He was a gregarious person who enjoyed large gatherings."]
+        },
+        {
+            "word": "persevere",
+            "meaning": "To continue in a course of action even in the face of difficulty.",
+            "examples": ["She persevered through the challenges.", "He persevered despite numerous setbacks."]
+        }
+    ]
+
+    # Select a random word from the list
+    daily_word_data = random.choice(words)
+    
+    return jsonify(daily_word_data)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

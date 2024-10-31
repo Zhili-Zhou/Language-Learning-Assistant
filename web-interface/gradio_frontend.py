@@ -44,6 +44,20 @@ def get_pronunciation(word):
     else:
         return "Error: Could not generate pronunciation."
 
+def get_daily_word():
+    response = requests.get(f"{BACKEND_URL}/daily_word")
+    if response.status_code == 200:
+        data = response.json()
+        word = data.get("word", "No word available today.")
+        meaning = data.get("meaning", "No meaning available.")
+        examples = data.get("examples", [])
+        
+        # Format the output
+        examples_text = "\n".join([f"- {example}" for example in examples])
+        return f"Word: {word}\nMeaning: {meaning}\nExamples:\n{examples_text}"
+    else:
+        return "Error: Could not retrieve daily word."
+
 # Set up Gradio Chatbot Interface
 with gr.Blocks() as demo:
     gr.Markdown("""
@@ -55,7 +69,7 @@ with gr.Blocks() as demo:
     - 📚 **Get grammar explanations**, e.g., "Can you explain how to use the German dative case?"
     - 🗣️ **Practice pronunciation**, just type in the word you want to know how to pronounce!
     - ✨ **Clear the conversation memory**, just lick "🔄 Reset Conversation".
-    - 📖 Daily Vocabulary Word: eg. " Give me some german words about food."
+    - 📖 **Get Daily Vocabulary Word** to expand your vocabulary!
                  """)
     chatbot = gr.Chatbot(label="Chat with Assistant")
     with gr.Row():
@@ -73,6 +87,13 @@ with gr.Blocks() as demo:
 
     pronunciation_button.click(get_pronunciation, inputs=word_input, outputs=pronunciation_audio)
     
+    # Add daily vocabulary word elements
+    gr.Markdown("### Daily Vocabulary Word")
+    daily_word_button = gr.Button("Get Daily Word")
+    daily_word_output = gr.Textbox(label="Today's Word with Meaning and Examples:", lines=5)
+
+    daily_word_button.click(get_daily_word, outputs=daily_word_output)
+
     # Link the buttons to functions
     send_button.click(chat_with_memory, [chatbot, user_input], [chatbot, user_input], queue=False)
     reset_button.click(clear_conversation, [], [chatbot, user_input], queue=False)
