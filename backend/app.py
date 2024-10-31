@@ -27,14 +27,6 @@ load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
-# reset conversation history
-@app.route("/reset", methods=["POST"])
-def reset():
-    global general_conversation_history, roleplay_conversation_history
-    general_conversation_history = []
-    roleplay_conversation_history = []
-    return jsonify({"message": "Conversation history reset."})
-
 
 '''----------------------------normal text assistant------------------------------------'''
 
@@ -69,26 +61,44 @@ def ask():
     # Return both the text and audio as a response
     return jsonify({"answer": answer})
 
-
+LANGUAGE_CODES = {
+    "English": "en",
+    "French": "fr",
+    "German": "de",
+    "Spanish": "es",
+    "Italian": "it",
+    "Chinese": "zh",
+    "Japanese": "ja"
+}
 
 # Endpoint to generate pronunciation audio
 @app.route("/pronounce", methods=["POST"])
 def pronounce():
     data = request.json
     text = data.get("text")  
-    language = data.get("language", "en")  # Default to English if no language specified
+    language_name = data.get("language", "English") 
+    language_code = LANGUAGE_CODES.get(language_name, "en")  # Default to English if language is not recognized
+
 
     if not text:
         return jsonify({"error": "No word provided"}), 400
 
     try:
         # Generate speech using gTTS
-        tts = gTTS(text=text, lang=language)
+        tts = gTTS(text=text, lang=language_code)
         filename = "pronunciation.mp3"
         tts.save(filename)
         return send_file(filename, as_attachment=True)
     except Exception as e:
         return jsonify({"error": f"Failed to generate pronunciation: {str(e)}"}), 500
+    
+
+#reset chat history
+@app.route("/reset_chat", methods=["POST"])
+def reset_chat():
+    global conversation_history 
+    conversation_history = []
+    return jsonify({"message": "Conversation history reset."})
     
     
 '''----------------------------roleplay assistant------------------------------------'''
@@ -121,17 +131,7 @@ def roleplay():
     If the user makes any language mistakes, kindly correct them and provide the right response. \
     Here is the user's message: '{user_message}'\
     Be more active into the conversation, make it easier for the user to continue talking and learning.\
-    Analyze the user input for specific keywords and phrases that indicate a request for generating an image. Look for terms such as:\
-    - 'Generate a picture of...'\
-    - 'Create an image representing...'\
-    - 'Show me a visual of...'\
-    - 'Illustrate my idea about...'\
-    - 'I want a drawing of...'\
-    - 'Can you depict...'\
-    - 'I'd like to see...'\
-    - 'Make a graphic for...'\
-    - 'Design an image for...'\
-    If any of these phrases or similar requests are present, ask the user to say 'Show me the picture of' so you can generate the picture. "
+    "
 
 
     # Check if this message is confirming an image request
@@ -167,6 +167,13 @@ def roleplay():
         roleplay_conversation_history.append({"role": "assistant", "content": answer})
 
         return jsonify({"answer": answer})
+    
+# Reset roleplay history route
+@app.route("/reset_roleplay", methods=["POST"])
+def reset_roleplay():
+    global roleplay_conversation_history
+    roleplay_conversation_history = []
+    return jsonify({"message": "Roleplay history reset."})
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
