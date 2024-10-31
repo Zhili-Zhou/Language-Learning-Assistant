@@ -65,7 +65,8 @@ with gr.Blocks(css="""
             submit_button.click(chat_with_memory, inputs=[chat_history, user_input], outputs=[chat_interface, user_input])
             reset_button.click(clear_chat_conversation, inputs=[chat_history], outputs=chat_interface)
 
-            gr.Markdown("### Daily Vocabulary Word")
+            # Daily Vocabulary Word
+            gr.Markdown("## Daily Vocabulary Word")
             daily_word_button = gr.Button("Get Daily Word")
             daily_word_output = gr.Textbox(label="Today's Word with Meaning and Examples:", lines=5)
             daily_word_button.click(get_daily_word, outputs=daily_word_output)
