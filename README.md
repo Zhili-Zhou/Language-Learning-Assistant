@@ -17,6 +17,8 @@ A GPT-powered assistant designed to help users practice and learn a new language
 - **Grammar Assistance**: Ask the assistant to explain complex grammar rules.
 - **Pronunciation Assistance**: Get the pronunciation of the words/sentences.
 - **Daily Vocabulary Word**: Get a new word to learn every day.
+- **Roleplay**: Talk with the assistant in a given scenario.
+- **Getting Image**: When doing Roleplay, you can require image when you have something you don't understand.
 
 ## Project Structure
 
@@ -31,7 +33,7 @@ A GPT-powered assistant designed to help users practice and learn a new language
 ├── /venv                        # Virtual environment folder (not committed to GitHub)
 │
 ├── /web-interface               # Frontend folder
-│   └──  gradio_frontend.py       
+│   └──  gradio_frontend.py
 │
 ├── README.md                    # Project documentation
 └── .gitignore                   # Git ignore file (to ignore sensitive files like .env and node_modules)
@@ -88,7 +90,8 @@ OPENAI_API_KEY=your-openai-api-key
 #### 4. Run the Flask server:
 
 ```
-python backend/app.py
+cd backend
+python app.py
 ```
 
 The backend server will run on http://127.0.0.1:5000
@@ -120,19 +123,17 @@ REACT_APP_BACKEND_URL=http://127.0.0.1:5000
 #### 4. Run the frontend development server:
 
 ```
-npm start
+python gradio_frontend.py
 
 ```
 
-This will start the React development server, and you can access the frontend at http://localhost:3000
-
-You'll be able to ask questions, practice vocabulary, and learn grammar by interacting with the assistant.
+You'll be able to interact with the assistant.
 
 Enter a prompt, and the assistant will respond based on the language-learning tasks you request.
 
 ### Step 4: Running the Application
 
-With both the backend and frontend servers running, open http://localhost:3000 in your browser to start using the Language Learning Assistant.
+With both the backend and frontend servers running, open the shared link from gradio in your browser to start using the Language Learning Assistant.
 
 ## Contributing
 

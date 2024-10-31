@@ -94,8 +94,6 @@ def pronounce():
 '''----------------------------roleplay assistant------------------------------------'''
 
 
-<<<<<<< HEAD
-
 def is_image_request(message):
     # Check if the message is likely to be an image request
     keywords = ["show me", "picture of", "what is", "how does"]
