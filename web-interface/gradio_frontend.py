@@ -132,29 +132,29 @@ with gr.Blocks(css="""
             submit_button.click(chat_with_memory, inputs=[chat_history, user_input], outputs=[chat_interface, user_input])
             reset_button.click(clear_chat_conversation, inputs=[chat_history], outputs=chat_interface)
 
-    pronunciation_button.click(get_pronunciation, inputs=word_input, outputs=pronunciation_audio)
+        pronunciation_button.click(get_pronunciation, inputs=word_input, outputs=pronunciation_audio)
     
-    # Add daily vocabulary word elements
-    gr.Markdown("### Daily Vocabulary Word")
-    daily_word_button = gr.Button("Get Daily Word")
-    daily_word_output = gr.Textbox(label="Today's Word with Meaning and Examples:", lines=5)
+        # Add daily vocabulary word elements
+        gr.Markdown("### Daily Vocabulary Word")
+        daily_word_button = gr.Button("Get Daily Word")
+        daily_word_output = gr.Textbox(label="Today's Word with Meaning and Examples:", lines=5)
 
-    daily_word_button.click(get_daily_word, outputs=daily_word_output)
+        daily_word_button.click(get_daily_word, outputs=daily_word_output)
 
-    # Link the buttons to functions
-    send_button.click(chat_with_memory, [chatbot, user_input], [chatbot, user_input], queue=False)
-    reset_button.click(clear_conversation, [], [chatbot, user_input], queue=False)
+        # Link the buttons to functions
+        send_button.click(chat_with_memory, [chatbot, user_input], [chatbot, user_input], queue=False)
+        reset_button.click(clear_conversation, [], [chatbot, user_input], queue=False)
     
 
-    gr.Markdown("## Ask for Pronunciation")
-    word_input = gr.Textbox(label="Enter something to pronounce:")
-    language_dropdown = gr.Dropdown(["English", "French", "German", "Spanish", "Italian", "Chinese", "Japanese"], label="Choose Language")
-    pronunciation_button = gr.Button("Pronounce")
-    pronunciation_audio = gr.Audio(label="Pronunciation", type="filepath")
+        gr.Markdown("## Ask for Pronunciation")
+        word_input = gr.Textbox(label="Enter something to pronounce:")
+        language_dropdown = gr.Dropdown(["English", "French", "German", "Spanish", "Italian", "Chinese", "Japanese"], label="Choose Language")
+        pronunciation_button = gr.Button("Pronounce")
+        pronunciation_audio = gr.Audio(label="Pronunciation", type="filepath")
 
-    pronunciation_button.click(get_pronunciation, inputs=[word_input, language_dropdown], outputs=pronunciation_audio)
+        pronunciation_button.click(get_pronunciation, inputs=[word_input, language_dropdown], outputs=pronunciation_audio)
 
-        # Roleplay Tab
+    # Roleplay Tab
     with gr.Tab("Roleplay"):
         gr.Markdown("""
         ## Roleplay Instructions
