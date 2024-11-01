@@ -104,15 +104,7 @@ The backend server will run on http://127.0.0.1:5000
 cd web-interface
 ```
 
-#### 2. Install the dependencies:
-
-If you have already installed, please skill this part.
-
-```bash
-npm install
-```
-
-#### 3. Create a .env file in the frontend/ folder::
+#### 2. Create a .env file in the frontend/ folder::
 
 Normally it should be already there.
 
@@ -120,7 +112,7 @@ Normally it should be already there.
 REACT_APP_BACKEND_URL=http://127.0.0.1:5000
 ```
 
-#### 4. Run the frontend development server:
+#### 3. Run the frontend development server:
 
 ```
 python gradio_frontend.py
