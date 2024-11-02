@@ -28,7 +28,6 @@ load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
-
 '''----------------------------normal text assistant------------------------------------'''
 
 @app.route("/ask", methods=["POST"])
@@ -72,6 +71,7 @@ LANGUAGE_CODES = {
     "Japanese": "ja"
 }
 
+
 # Endpoint to generate pronunciation audio
 @app.route("/pronounce", methods=["POST"])
 def pronounce():
@@ -92,7 +92,36 @@ def pronounce():
         return send_file(filename, as_attachment=True)
     except Exception as e:
         return jsonify({"error": f"Failed to generate pronunciation: {str(e)}"}), 500
-    
+
+@app.route("/learn_word", methods=["POST"])
+def learn_word():
+    data = request.json
+    language = data.get("language", "English")
+
+    prompt = f"Provide a random advanced vocabulary word in {language} with its English meaning and two example sentences."
+
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=[{"role": "user", "content": prompt}],
+            max_tokens=100,
+            temperature=0.7
+        )
+        
+        # Log the full response for debugging
+        print("OpenAI Response:", response)
+
+        # Check if the response is in the expected format
+        if 'choices' in response and len(response['choices']) > 0:
+            answer = response.choices[0].message["content"].strip()
+            return jsonify({"content": answer})
+        else:
+            return jsonify({"error": "No valid response from OpenAI API"}), 500
+
+    except Exception as e:
+        return jsonify({"error": f"Failed to generate vocabulary: {str(e)}"}), 500
+
+  
 
 #reset chat history
 @app.route("/reset_chat", methods=["POST"])
@@ -176,32 +205,7 @@ def reset_roleplay():
     roleplay_conversation_history = []
     return jsonify({"message": "Roleplay history reset."})
 
-# Daily word route to provide a word, definition, and examples
-@app.route("/daily_word", methods=["GET"])
-def daily_word():
-    # Mock vocabulary words for demonstration purposes
-    words = [
-        {
-            "word": "elucidate",
-            "meaning": "To make something clear or to explain.",
-            "examples": ["Please elucidate your point.", "The teacher elucidated the topic with ease."]
-        },
-        {
-            "word": "gregarious",
-            "meaning": "Fond of company; sociable.",
-            "examples": ["Sheep are very gregarious animals.", "He was a gregarious person who enjoyed large gatherings."]
-        },
-        {
-            "word": "persevere",
-            "meaning": "To continue in a course of action even in the face of difficulty.",
-            "examples": ["She persevered through the challenges.", "He persevered despite numerous setbacks."]
-        }
-    ]
 
-    # Select a random word from the list
-    daily_word_data = random.choice(words)
-    
-    return jsonify(daily_word_data)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

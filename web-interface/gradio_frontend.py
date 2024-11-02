@@ -21,9 +21,13 @@ def get_pronunciation(word, language):
     # Placeholder for pronunciation audio file path
     return "/path/to/pronunciation.mp3"
 
-def get_daily_word():
-    # Placeholder daily word response
-    return "Word: example\nMeaning: a placeholder word\nExamples:\n- This is an example sentence."
+def learn_new_word(language):
+    response = requests.post(f"{BACKEND_URL}/learn_word", json={"language": language})
+    if response.status_code == 200:
+        word_data = response.json()
+        return f"**Word:** {word_data['word']}\n**Meaning:** {word_data['meaning']}\n**Examples:**\n- " + "\n- ".join(word_data['examples'])
+    else:
+        return "Error: Could not retrieve the word."
 
 # Gradio Interface
 with gr.Blocks(css="""
@@ -65,12 +69,6 @@ with gr.Blocks(css="""
             submit_button.click(chat_with_memory, inputs=[chat_history, user_input], outputs=[chat_interface, user_input])
             reset_button.click(clear_chat_conversation, inputs=[chat_history], outputs=chat_interface)
 
-            # Daily Vocabulary Word
-            gr.Markdown("## Daily Vocabulary Word")
-            daily_word_button = gr.Button("Get Daily Word")
-            daily_word_output = gr.Textbox(label="Today's Word with Meaning and Examples:", lines=5)
-            daily_word_button.click(get_daily_word, outputs=daily_word_output)
-
             # Pronunciation
             gr.Markdown("## Ask for Pronunciation")
             word_input = gr.Textbox(label="Enter something to pronounce:")
@@ -78,6 +76,13 @@ with gr.Blocks(css="""
             pronunciation_button = gr.Button("Pronounce")
             pronunciation_audio = gr.Audio(label="Pronunciation", type="filepath")
             pronunciation_button.click(get_pronunciation, inputs=[word_input, language_dropdown], outputs=pronunciation_audio)
+
+            # Learn a new Word
+            gr.Markdown("## Learn a New Word")
+            language_dropdown_learn = gr.Dropdown(["English", "German", "French", "Spanish", "Italian", "Chinese", "Japanese"], label="Choose Language")
+            learn_word_button = gr.Button("Learn a New Word")
+            learn_word_output = gr.Textbox(label="Today's Word with Meaning and Examples:", lines=5)
+            learn_word_button.click(learn_new_word, inputs=language_dropdown_learn, outputs=learn_word_output)
 
         # Roleplay Tab
         with gr.Tab("Roleplay"):
