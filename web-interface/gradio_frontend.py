@@ -72,6 +72,14 @@ def roleplay_with_memory(roleplay_history, user_input, language, scenario):
         roleplay_history.append(("Assistant", f"{answer} <img src='{image_url}' width='256' height='256'>"))
     return roleplay_history, ""
 
+def learn_new_word(language):
+    response = requests.post(f"{BACKEND_URL}/learn_word", json={"language": language})
+    if response.status_code == 200:
+        word_data = response.json()
+        return f"**Word:** {word_data['word']}\n**Meaning:** {word_data['meaning']}\n**Examples:**\n- " + "\n- ".join(word_data['examples'])
+    else:
+        return "Error: Could not retrieve the word."
+
 # Set up Gradio Chatbot Interface
 with gr.Blocks(css="""
     /* Tab container background and styling */
@@ -119,6 +127,13 @@ with gr.Blocks(css="""
 
             pronunciation_button.click(get_pronunciation, inputs=[word_input, language_dropdown], outputs=pronunciation_audio)
 
+            # Learn a new Word
+            gr.Markdown("## Learn a New Word")
+            language_dropdown_learn = gr.Dropdown(["English", "German", "French", "Spanish", "Italian", "Chinese", "Japanese"], label="Choose Language")
+            learn_word_button = gr.Button("Learn a New Word")
+            learn_word_output = gr.Textbox(label="Today's Word with Meaning and Examples:", lines=5)
+            learn_word_button.click(learn_new_word, inputs=language_dropdown_learn, outputs=learn_word_output)
+            
         # Roleplay Tab
         with gr.Tab("Roleplay"):
             gr.Markdown("""
