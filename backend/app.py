@@ -94,11 +94,20 @@ def pronounce():
         return jsonify({"error": f"Failed to generate pronunciation: {str(e)}"}), 500
 
 @app.route("/learn_word", methods=["POST"])
+@app.route("/learn_word", methods=["POST"])
 def learn_word():
     data = request.json
     language = data.get("language", "English")
 
-    prompt = f"Provide a random advanced vocabulary word in {language} with its English meaning and two example sentences."
+    prompt = (
+    f"Provide a random advanced vocabulary word in {language} with its English meaning "
+    "and two example sentences. Format your response as follows:\n"
+    "Word: <word>\n"
+    "Meaning: <meaning>\n"
+    "Examples:\n"
+    "- Example sentence 1\n"
+    "- Example sentence 2"
+)
 
     try:
         response = openai.ChatCompletion.create(
@@ -113,14 +122,22 @@ def learn_word():
 
         # Check if the response is in the expected format
         if 'choices' in response and len(response['choices']) > 0:
+            # Parse the response into components
             answer = response.choices[0].message["content"].strip()
-            return jsonify({"content": answer})
+            lines = answer.splitlines()
+
+            # Assuming the format is consistent, extract the word, meaning, and examples
+            word = lines[0].replace("Word: ", "").strip()
+            meaning = lines[1].replace("Meaning: ", "").strip()
+            examples = [line.strip("- ") for line in lines[2:] if line.startswith("- ")]
+
+            # Return as structured JSON
+            return jsonify({"word": word, "meaning": meaning, "examples": examples})
         else:
             return jsonify({"error": "No valid response from OpenAI API"}), 500
 
     except Exception as e:
         return jsonify({"error": f"Failed to generate vocabulary: {str(e)}"}), 500
-
   
 
 #reset chat history
